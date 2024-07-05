@@ -2,9 +2,9 @@
 SET JELLYFIN_WEB_GIT=https://github.com/jellyfin/jellyfin-web.git
 SET JELLYFIN_TIZEN_GIT=https://github.com/jellyfin/jellyfin-tizen.git
 
-SET INSTALL_TO_TV=False
+SET INSTALL_TO_TV=True
 SET TIZEN_BIN=C:\tizen-studio\tools\ide\bin\tizen
-SET TV_NAME=QE65Q60XXXXXX
+SET TV_NAME=QE65Q60TAUXXC
 
 
 echo Preparing jellyfin-web.
@@ -34,13 +34,6 @@ call %TIZEN_BIN% build-web -e ".*" -e gulpfile.js -e README.md -e "node_modules/
 echo Packaging build result...
 call %TIZEN_BIN% package -t wgt -o . -- .buildResult
 
-echo Cleaning up...
-SET INSTALL_TO_TV=
-SET TIZEN_BIN=
-SET TV_NAME=
-SET SKIP_PREPARE=
-SET JELLYFIN_WEB_DIR=
-
 move Jellyfin.wgt ../Jellyfin.wgt
 cd ..
 
@@ -48,6 +41,13 @@ IF %INSTALL_TO_TV% == True (
     echo Installing to the TV...
     call %TIZEN_BIN% install -n Jellyfin.wgt -t %TV_NAME%
 )
+
+echo Cleaning up...
+SET INSTALL_TO_TV=
+SET TIZEN_BIN=
+SET TV_NAME=
+SET SKIP_PREPARE=
+SET JELLYFIN_WEB_DIR=
 
 echo Done!
 pause
